@@ -67,7 +67,7 @@
     <?=$bimbinganOffline[0]['pembahasan']?>
   </div>
 </div>
-<a href="<?=base_url()?>ta/bimbingan_offline" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i> Kembali</a>
+<a href="<?=base_url()?>ta/bimbingan_offline" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
 <!-- End of content -->
             <!-- /.box-body -->
           </div>

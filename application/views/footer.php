@@ -16,6 +16,7 @@
 
 <!-- jQuery 3 -->
 <script src="<?=base_url()?>assets/bower_components/jquery/dist/jquery.min.js"></script>
+
 <!-- jQuery UI 1.11.4 -->
 <script src="<?=base_url()?>assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -54,5 +55,23 @@ $.widget.bridge('uibutton', $.ui.button);
 
 <!-- Custom JavaScript -->
 <script src="<?=base_url()?>assets/js/custom.js"></script>
+<script>
+  var baseurl = "<?=base_url()?>";
+  console.log(baseurl);
+
+  function getNumComment(id_bimbingan_ta)
+  {
+      console.log(id_bimbingan_ta);
+      $.ajax({
+          method: "post",
+          url: baseurl+"ajax/getNumComment",
+          data: {id_bimbingan_ta:id_bimbingan_ta},
+          success: function(res){
+              $('#numComment').text(res);
+              console.log(res);
+          }
+      });
+  }
+</script>
 </body>
 </html>

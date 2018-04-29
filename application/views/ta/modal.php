@@ -59,7 +59,7 @@
 
         <div class="form-group">
             <label for="npm">File Bimbingan</label>
-            <input class="form-control" type="file" name="file">
+            <input type="file" id="exampleInputFile" name="file_doc" value="error">
         </div>
 
 

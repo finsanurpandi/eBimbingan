@@ -50,5 +50,13 @@
        .badge{
          background-color: #d9534f;
        }
+
+       .nav-tabs{
+         border-bottom: 1px solid transparent;
+       }
+
+       .nav > li > a {
+          padding: 5px 10px;
+        }
     </style>
 </head>

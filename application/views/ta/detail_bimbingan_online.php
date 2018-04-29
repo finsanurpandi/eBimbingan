@@ -1,3 +1,36 @@
+<?php
+
+    function time_elapsed_string($datetime, $full = false) {
+        $now = new DateTime;
+        $ago = new DateTime($datetime);
+        $diff = $now->diff($ago);
+
+        $diff->w = floor($diff->d / 7);
+        $diff->d -= $diff->w * 7;
+
+        $string = array(
+            'y' => 'year',
+            'm' => 'month',
+            'w' => 'week',
+            'd' => 'day',
+            'h' => 'hour',
+            'i' => 'minute',
+            's' => 'second',
+        );
+        foreach ($string as $k => &$v) {
+            if ($diff->$k) {
+                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+            } else {
+                unset($string[$k]);
+            }
+        }
+
+        if (!$full) $string = array_slice($string, 0, 1);
+        return $string ? implode(', ', $string) . ' ago' : 'just now';
+    }
+
+?>
+
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -19,70 +52,85 @@
     <!-- About Me Box -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">5520114073 - Agung Gumelar</h3>
+            <h3 class="box-title"><?=$this->session->npm.' - '.$this->session->nama_mhs?></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body box-profile">
 <!-- Content Here -->
+<?php
+  if (@$this->session->flashdata('success') == true) {
+?>
+    <div class="alert alert-success">Data berhasil ditambahkan!
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <br/>
+    </div>
 
+<?php
+  }
+?>
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title"><span class="text-muted"><em>#1</em></span> Bimbingan 1 <small> <span class="time pull-right"><i class="fa fa-clock-o"></i> 4 days ago</span></small></h3>
+  <h3 class="panel-title"><?=$bimbinganOnline[0]['topik']?> <small> <span class="time pull-right"><i class="fa fa-clock-o"></i> <?=$timeago?></span></small></h3>
   </div>
   <div class="panel-body">
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <?=$bimbinganOnline[0]['pembahasan']?>
   </div>
 </div>
 <div class="well well-sm">
-  file.docx
+<a href="<?=base_url()?>download/file/<?=$this->encrypt->encode($bimbinganOnline[0]['file'])?>" class="" target="_blank"><i class="fa fa-file-word-o"></i> <?=$bimbinganOnline[0]['file']?></a>
 </div>
 <hr/>
 
 <!-- Kolom komentar -->
+<?php
+if (!empty($komentar))
+{
+for ($i=0; $i < count($komentar); $i++) { 
+?>
 <div class="row">
   <div class="col-md-1">
-    <img src="<?=base_url()?>assets/img/user2-160x160.jpg" class="img-rounded img-responsive pull-right" width="60px" height="60px">
+    <img src="<?=base_url()?>assets/img/profiles/<?=$komentar[$i]['img']?>" class="img-rounded img-responsive pull-right" width="60px" height="60px">
   </div>
   <div class="col-md-11">
     <div class="well well-sm">
-      <strong>Agung Gumelar</strong>
+      <strong><?=$komentar[$i]['pengirim']?></strong>
       <br/>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      <?=$komentar[$i]['komentar']?>
       <br />
-      <small><i class="fa fa-clock-o"></i> 4 days ago</small>
+      <small><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($komentar[$i]['datetime_sent'])) )?></small>
     </div>
+    <?php
+    if (!empty($komentar[$i]['file'])) {
+    ?>
+    <div class="well well-sm">
+    <a href="<?=base_url()?>download/file/<?=$this->encrypt->encode($komentar[$i]['file'])?>" class="" target="_blank"><i class="fa fa-file-word-o"></i> <?=$komentar[$i]['file']?></a>
+    </div>
+    <?php } ?>
   </div>
 </div>
+<?php } }?>
 <!-- End of kolom komentar -->
-<!-- Kolom komentar -->
-<div class="row">
-  <div class="col-md-1">
-    <img src="<?=base_url()?>assets/img/user1-128x128.jpg" class="img-rounded img-responsive pull-right" width="60px" height="60px">
-  </div>
-  <div class="col-md-11">
-    <div class="well well-sm">
-      <strong>Dosen Pembimbing</strong>
-      <br/>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      <br />
-      <small><i class="fa fa-clock-o"></i> 4 days ago</small>
-    </div>
-    <div class="well well-sm">
-      file_rev.docx
-    </div>
-  </div>
-</div>
-<!-- End of kolom komentar -->
+
 <hr/>
 
 <div class="row">
   <div class="col-md-1">
-    <img src="<?=base_url()?>assets/img/user2-160x160.jpg" class="img-rounded img-responsive pull-right" width="60px" height="60px">
+    <img src="<?=base_url()?>assets/img/profiles/<?=$user['img_profile']?>" class="img-rounded img-responsive pull-right" width="60px" height="60px">
   </div>
   <div class="col-md-11">
-    <input class="form-control" type="text" placeholder="Type a comment">
-    <input class="form-control input-sm btn btn-default btn-sm" value="attach file" type="file" />
+    <!-- <input class="form-control" type="text" placeholder="Type a comment"> -->
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a href="#">Write comment</a></li>
+    </ul>
+    <form method="post" action="" enctype="multipart/form-data">
+    <textarea class="form-control" rows="3" name="komentar" required></textarea>
+    <input class="form-control input-sm btn btn-default btn-sm" value="attach file" type="file" name="file_doc" />
+    <br>
+    <input class="btn btn-success btn-xs" value="submit" type="submit" name="addComment"/>
+    </form>
   </div>
 </div>
 
@@ -102,7 +150,7 @@
 
 
 
-<a href="#" class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</a>
+<a href="<?=base_url()?>ta/bimbingan_online" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
 <!-- End of content -->
             <!-- /.box-body -->
           </div>
