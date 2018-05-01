@@ -36,12 +36,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Bimbingan Online
+        Bimbingan <?=ucwords($tipe)?>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#">Dashboard</a></li>
         <li>Aktivitas</li>
-        <li><a href="#">Bimbingan Online</a></li>
+        <li><a href="#">Bimbingan <?=ucwords($tipe)?></a></li>
         <li><strong>Detail</strong></li>
       </ol>
     </section>
@@ -52,7 +52,7 @@
     <!-- About Me Box -->
           <div class="box box-primary">
             <div class="box-header with-border">
-            <h3 class="box-title"><?=$this->session->npm.' - '.$this->session->nama_mhs?></h3>
+              <h3 class="box-title"><?=$this->session->npm.' - '.$this->session->nama_mhs?></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body box-profile">
@@ -73,14 +73,19 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-  <h3 class="panel-title"><?=$bimbinganOnline[0]['topik']?> <small> <span class="time pull-right"><i class="fa fa-clock-o"></i> <?=$timeago?></span></small></h3>
+    <h3 class="panel-title"><?=$bimbingan[0]['topik']?> <small> <span class="time pull-right"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($bimbingan[0]['tgl_input'])) )?></span></small></h3>
   </div>
   <div class="panel-body">
-  <?=$bimbinganOnline[0]['pembahasan']?>
+    <?=$bimbingan[0]['pembahasan']?>
   </div>
 </div>
+<?php
+if ($tipe === 'online') {
+?>
+
+<!-- Bagian ketika bimbingan online  -->
 <div class="well well-sm">
-<a href="<?=base_url()?>download/file/<?=$this->encrypt->encode($bimbinganOnline[0]['file'])?>" class="" target="_blank"><i class="fa fa-file-word-o"></i> <?=$bimbinganOnline[0]['file']?></a>
+<a href="<?=base_url()?>download/file/<?=$this->encrypt->encode($bimbingan[0]['file'])?>" class="" target="_blank"><i class="fa fa-file-word-o"></i> <?=$bimbingan[0]['file']?></a>
 </div>
 <hr/>
 
@@ -116,6 +121,13 @@ for ($i=0; $i < count($komentar); $i++) {
 
 <hr/>
 
+<?php
+if ($bimbingan[0]['status_validasi'] == 1) {
+  echo "<div class='well well-sm'><strong>";
+  echo "The topis is closed. Sorry, you cannot add comment anymore...";
+  echo "</strong></div>";
+} else {
+?>
 <div class="row">
   <div class="col-md-1">
     <img src="<?=base_url()?>assets/img/profiles/<?=$user['img_profile']?>" class="img-rounded img-responsive pull-right" width="60px" height="60px">
@@ -133,24 +145,13 @@ for ($i=0; $i < count($komentar); $i++) {
     </form>
   </div>
 </div>
-
+<?php } ?>
 <hr/>
+<!-- bagian akhir dari bimbingan online -->
 
-
-<!-- <form class="form-horizontal">
-  <div class="form-group margin-bottom-none">
-    <div class="col-sm-9">
-      <input class="form-control input-sm" placeholder="Response">
-    </div>
-    <div class="col-sm-3">
-      <button type="submit" class="btn btn-danger pull-right btn-block btn-sm">Send</button>
-    </div>
-  </div>
-</form> -->
-
-
-
-<a href="<?=base_url()?>ta/bimbingan_online" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
+<?php } ?>
+<!-- <a href="<?=base_url()?>ta/bimbingan" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a> -->
+<a href="javascript:history.back()" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
 <!-- End of content -->
             <!-- /.box-body -->
           </div>

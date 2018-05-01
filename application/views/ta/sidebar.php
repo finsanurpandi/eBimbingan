@@ -44,8 +44,8 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="<?=base_url()?>ta/catatan_harian"><i class="fa fa-circle-o"></i> Catatan Harian</a></li>
-          <li><a href="<?=base_url()?>ta/bimbingan_offline"><i class="fa fa-circle-o"></i> Bimbingan Offline</a></li>
-          <li><a href="<?=base_url()?>ta/bimbingan_online"><i class="fa fa-circle-o"></i> Bimbingan Online</a></li>
+          <li><a href="<?=base_url()?>ta/bimbingan"><i class="fa fa-circle-o"></i> Bimbingan</a></li>
+          <!-- <li><a href="<?=base_url()?>ta/bimbingan_online"><i class="fa fa-circle-o"></i> Bimbingan Online</a></li> -->
         </ul>
       </li>
       <li class="treeview">

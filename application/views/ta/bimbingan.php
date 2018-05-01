@@ -36,12 +36,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Bimbingan Offline
+        Bimbingan
       </h1>
       <ol class="breadcrumb">
         <li><a href="#">Dashboard</a></li>
         <li>Aktivitas</li>
-        <li><strong>Bimbingan Offline</strong></li>
+        <li><strong>Bimbingan</strong></li>
       </ol>
     </section>
 
@@ -56,7 +56,7 @@
             <!-- /.box-header -->
             <div class="box-body box-profile">
 <!-- Content Here -->
-<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addBimbinganOffline"><i class="fa fa-plus"></i> Tambah Data</button>
+<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addBimbingan"><i class="fa fa-plus"></i> Tambah Data</button>
 <br/>
 <br />
 
@@ -79,6 +79,7 @@
     <tr>
       <th>#</th>
       <th>Topik</th>
+      <th>Tipe Bimbingan</th>
       <th>Status</th>
     </tr>
   </thead>
@@ -88,8 +89,8 @@
 $i = 1;
 $id_ta = $this->session->id_ta;
 
-foreach ($bimbinganOffline as $key => $value) {
-  $detail = base_url('ta/detail_bimbingan_offline').'/'.$this->encrypt->encode($value['id_bimbingan_ta']);
+foreach ($bimbingan as $key => $value) {
+  $detail = base_url('ta/detail_bimbingan').'/'.$this->encrypt->encode($value['id_bimbingan_ta']).'/'.$this->encrypt->encode($value['tipe']);
 ?>
 
     <tr>
@@ -99,39 +100,45 @@ foreach ($bimbinganOffline as $key => $value) {
         <br />
         <small><span class="time" id="time"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($value['tgl_input'])) )?></span></small>
       </td>
-<?php
-if ($value['status_validasi'] == 0) {
-?>
-      <td><span class="label label-warning">pending</span></td>
+      <td>
+      <?php
+
+        if($value['tipe'] == 'offline')
+        {
+            echo "<span class='label label-primary'>".ucwords($value['tipe']);
+        } else {
+            echo "<span class='label label-warning'>".ucwords($value['tipe']);
+        }
+      
+      ?>
+      </td>
 
 <?php
+if($value['tipe'] == 'offline')
+{
+    if ($value['status_validasi'] == 0) {
+        echo "<td><span class='label label-warning'>pending</span></td>";
+    } else {
+        echo "<td><span class='label label-success'>approved</span></td>";
+    }
+
 } else {
-?>
 
-      <td><span class="label label-success">approved</span></td>
+    if ($value['status_open'] == 0 && $value['status_validasi'] == 0) {
+        echo "<td><span class='label label-danger'>unread</span></td>";
+    } elseif ($value['status_open'] == 1 && $value['status_validasi'] == 0) {
+        echo "<td><span class='label label-warning'>on process</span></td>";
+    } elseif ($value['status_open'] == 1 && $value['status_validasi'] == 1) {
+        echo "<td><span class='label label-success'>closed</span></td>";
+    }
 
-<?php
 }
 $i++;
 ?>
+
     </tr>
 <?php } ?>
-    <!-- <tr>
-      <td>2</td>
-      <td><strong>Bimbingan 2</strong>
-        <br />
-        <small><span class="time"><i class="fa fa-clock-o"></i> 11 days ago</span></small>
-      </td>
-      <td><span class="label label-success">approved</span></td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td><strong>Bimbingan 3</strong>
-        <br />
-        <small><span class="time"><i class="fa fa-clock-o"></i> 15 days ago</span></small>
-      </td>
-      <td><span class="label label-danger">declined</span></td>
-    </tr> -->
+
   </tbody>
 </table>
 <!-- End of content -->

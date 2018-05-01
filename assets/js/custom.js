@@ -18,3 +18,7 @@ function getNumComment(id_bimbingan_ta)
         }
     });
 }
+
+$('#online').click(function(){
+    $('#bimbinganOffline').hide();
+});

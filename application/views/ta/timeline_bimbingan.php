@@ -1,3 +1,36 @@
+<?php
+
+    function time_elapsed_string($datetime, $full = false) {
+        $now = new DateTime;
+        $ago = new DateTime($datetime);
+        $diff = $now->diff($ago);
+
+        $diff->w = floor($diff->d / 7);
+        $diff->d -= $diff->w * 7;
+
+        $string = array(
+            'y' => 'year',
+            'm' => 'month',
+            'w' => 'week',
+            'd' => 'day',
+            'h' => 'hour',
+            'i' => 'minute',
+            's' => 'second',
+        );
+        foreach ($string as $k => &$v) {
+            if ($diff->$k) {
+                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+            } else {
+                unset($string[$k]);
+            }
+        }
+
+        if (!$full) $string = array_slice($string, 0, 1);
+        return $string ? implode(', ', $string) . ' ago' : 'just now';
+    }
+
+?>
+
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -19,69 +52,72 @@
       <!-- row -->
       <div class="row">
         <div class="col-md-12">
+
+<?php
+        foreach ($bimbingan as $key => $value) {
+          $detail = base_url('ta/detail_bimbingan').'/'.$this->encrypt->encode($value['id_bimbingan_ta']).'/'.$this->encrypt->encode($value['tipe']);
+?>
+
           <!-- The time line -->
           <ul class="timeline">
             <!-- timeline time label -->
             <li class="time-label">
+            <?php
+              if ($value['status_validasi'] == 0) {
+            ?>
                   <span class="bg-red">
-                    10 Feb. 2014
+            <?php 
+              } else {
+                echo "<span class='bg-green'>";
+              }
+            ?>
+                  <?=date("d M. Y", strtotime($value['tgl_bimbingan']))?>
                   </span>
             </li>
             <!-- /.timeline-label -->
             <!-- timeline item -->
             <li>
+            <?php 
+              if ($value['tipe'] == 'offline') {
+            ?>
               <i class="fa fa-envelope bg-blue"></i>
+            
+            <?php
+              } else {
+                echo "<i class='fa fa-comments bg-yellow'></i>";
+              }
+            ?>
 
               <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+                <span class="time"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($value['tgl_bimbingan'])) )?></span>
 
-                <h3 class="timeline-header"><a href="#">Bimbingan 1</a> <em>offline</em></h3>
+                <h3 class="timeline-header"><a href="<?=$detail?>"><?=$value['topik']?></a> <em><?=$value['tipe']?></em></h3>
 
                 <div class="timeline-body">
-                  Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                  weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                  jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                  quora plaxo ideeli hulu weebly balihoo...
+                <?=$value['pembahasan']?>
                 </div>
                 <div class="timeline-footer">
-                  <a class="btn btn-primary btn-xs">Read more</a>
+                  <?php
+                    if ($value['tipe'] === 'online') {
+                      echo "<a class='btn btn-warning btn-xs' href='".$detail."'>See Conversation</a>";
+                    } else {
+                      echo "<a class='btn btn-primary btn-xs' href='".$detail."'>Read more</a>";
+                    }
+                    
+                  ?>
+                  
                 </div>
               </div>
             </li>
             <!-- END timeline item -->
+<?php } ?>
+            
+
 
             <!-- timeline time label -->
             <li class="time-label">
                   <span class="bg-green">
-                    3 Jan. 2014
-                  </span>
-            </li>
-            <!-- /.timeline-label -->
-            <!-- timeline item -->
-            <li>
-              <i class="fa fa-comments bg-yellow"></i>
-
-              <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
-
-                <h3 class="timeline-header"><a href="#">Bimbingan 3</a> <em>online</em></h3>
-
-                <div class="timeline-body">
-                  Take me to your leader!
-                  Switzerland is small and neutral!
-                  We are more like Germany, ambitious and misunderstood!
-                </div>
-                <div class="timeline-footer">
-                  <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                </div>
-              </div>
-            </li>
-            <!-- END timeline item -->
-
-            <!-- timeline time label -->
-            <li class="time-label">
-                  <span class="bg-green">
-                    3 Jan. 2014
+                    <?=date("d M. Y", strtotime($ta['tgl_acc']))?>
                   </span>
             </li>
             <!-- /.timeline-label -->
@@ -90,9 +126,9 @@
               <i class="fa fa-user bg-aqua"></i>
 
               <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
+                <span class="time"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($ta['tgl_acc'])) )?></span>
 
-                <h3 class="timeline-header no-border"><a href="#">Acc Proposal</a></h3>
+                <h3 class="timeline-header no-border">Proposal Disetujui</h3>
               </div>
             </li>
             <!-- END timeline item -->

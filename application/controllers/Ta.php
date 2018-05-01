@@ -110,36 +110,61 @@ class Ta extends CI_Controller {
     $this->load_view('ta/detail_catatan_harian');
   }
 
-  function bimbingan_offline()
+  function bimbingan()
   {
-    $bimbinganOffline = $this->m_basic->getAllData('bimbingan_ta', array('id_ta' => $this->session->id_ta,'tipe' => 'offline'), array('tgl_input' => 'DESC'))->result_array();
+    $bimbingan = $this->m_basic->getAllData('bimbingan_ta', array('id_ta' => $this->session->id_ta), array('tgl_bimbingan' => 'DESC'))->result_array();
     $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
     $data['user'] = $user[0];
-    $data['bimbinganOffline'] = $bimbinganOffline;
+    $data['bimbingan'] = $bimbingan;
 
-    $this->load_view('ta/bimbingan_offline', $data);
+    $this->load_view('ta/bimbingan', $data);
 
     // add bimbingan
-    $addBimbinganOffline = $this->input->post('addBimbinganOffline');
+    $addBimbingan = $this->input->post('addBimbingan');
 
-    if (isset($addBimbinganOffline)) {
+    if (isset($addBimbingan)) {
       date_default_timezone_set("Asia/Bangkok");
       $date = new DateTime();
       $timenow = $date->format('Y-m-d H:i:s');
-      $datenow = $date->format('Y-m-d');
+      $tgl_bimbingan = $this->input->post('tgl_bimbingan').' '.$this->input->post('waktu_bimbingan');
       $id_bimbingan = hash('ripemd160', 'bimbingan_ta_'.$this->session->npm.'_'.$timenow);
 
-      $data = array(
-      'id_bimbingan_ta' => $id_bimbingan,
-      'id_ta' => $this->session->id_ta,
-      'topik' => $this->input->post('topik'),
-      'pembahasan' => $this->input->post('pembahasan'),
-      'tipe' => 'offline',
-      'tgl_bimbingan' => $this->input->post('tgl_bimbingan'),
-      'tgl_input' => $timenow
-      );
-
-      $this->m_basic->insertData('bimbingan_ta', $data);
+      if ($this->input->post('tipe') === 'offline') {
+        $data = array(
+          'id_bimbingan_ta' => $id_bimbingan,
+          'id_ta' => $this->session->id_ta,
+          'topik' => $this->input->post('topik'),
+          'pembahasan' => $this->input->post('pembahasan'),
+          'tipe' => $this->input->post('tipe'),
+          'tgl_bimbingan' => date('Y-m-d H:m:s',strtotime($tgl_bimbingan)),
+          'tgl_input' => $timenow
+          );
+    
+          $this->m_basic->insertData('bimbingan_ta', $data);
+    
+      } else {
+        $data = array(
+          'id_bimbingan_ta' => $id_bimbingan,
+          'id_ta' => $this->session->id_ta,
+          'topik' => $this->input->post('topik'),
+          'pembahasan' => $this->input->post('pembahasan'),
+          'tipe' => $this->input->post('tipe'),
+          'tgl_bimbingan' => $timenow,
+          'tgl_input' => $timenow
+          );
+    
+          $this->configFile();
+    
+          if (!$this->upload->do_upload('file_doc')) {
+            $this->m_basic->insertData('bimbingan_ta', $data);
+          } else {
+    
+            $fileinfo = $this->upload->data();
+    
+            $data['file'] = $fileinfo['file_name'];
+            $this->m_basic->insertData('bimbingan_ta', $data);
+          }
+      }
 
       $this->session->set_flashdata('success', true);
 
@@ -148,88 +173,23 @@ class Ta extends CI_Controller {
     }
   }
 
-  function detail_bimbingan_offline($id_bimbingan)
+  function detail_bimbingan($id_bimbingan, $tipe)
   {
     $id_bimbingan = $this->encrypt->decode($id_bimbingan);
-
-    $data_bimbingan = $this->m_basic->getAllData('bimbingan_ta', array('id_bimbingan_ta' => $id_bimbingan))->result_array();
-    $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
-    $data['user'] = $user[0];
-    $data['bimbinganOffline'] = $data_bimbingan;
-
-    $this->load_view('ta/detail_bimbingan_offline', $data);
-  }
-
-  function bimbingan_online()
-  {
-    $bimbinganOnline = $this->m_basic->getAllData('bimbingan_ta', array('id_ta' => $this->session->id_ta,'tipe' => 'online'), array('tgl_input' => 'DESC'))->result_array();
-    $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
-    $data['user'] = $user[0];
-    $data['bimbinganOnline'] = $bimbinganOnline;
-
-    $this->load_view('ta/bimbingan_online', $data);
-
-    // add bimbingan
-    $addBimbinganOnline = $this->input->post('addBimbinganOnline');
-
-    if (isset($addBimbinganOnline)) {
-      date_default_timezone_set("Asia/Bangkok");
-      $date = new DateTime();
-      $timenow = $date->format('Y-m-d H:i:s');
-      $datenow = $date->format('Y-m-d');
-      $id_bimbingan = hash('ripemd160', 'bimbingan_ta_'.$this->session->npm.'_'.$timenow);
-
-      $data = array(
-      'id_bimbingan_ta' => $id_bimbingan,
-      'id_ta' => $this->session->id_ta,
-      'topik' => $this->input->post('topik'),
-      'pembahasan' => $this->input->post('pembahasan'),
-      // 'file' => $this->input->post('file_doc'),
-      'tipe' => 'online',
-      'tgl_bimbingan' => $timenow,
-      'tgl_input' => $timenow
-      );
-
-      // print_r($data);
-
-      $this->configFile();
-
-			if (!$this->upload->do_upload('file_doc')) {
-				$this->m_basic->insertData('bimbingan_ta', $data);
-
-        $this->session->set_flashdata('success', true);
-
-        redirect($this->uri->uri_string());
-      } else {
-
-				$fileinfo = $this->upload->data();
-
-				$data['file'] = $fileinfo['file_name'];
-				$this->m_basic->insertData('bimbingan_ta', $data);
-
-				$this->session->set_flashdata('success', true);
-
-        redirect($this->uri->uri_string());
-
-			}
-    }
-  }
-
-  function detail_bimbingan_online($id_bimbingan)
-  {
-    $id_bimbingan = $this->encrypt->decode($id_bimbingan);
+    $tipe = $this->encrypt->decode($tipe);
 
     $data_bimbingan = $this->m_basic->getAllData('bimbingan_ta', array('id_bimbingan_ta' => $id_bimbingan))->result_array();
     $data_komentar = $this->m_basic->getAllData('komentar_ta', array('id_bimbingan_ta' => $id_bimbingan), array('datetime_sent' => 'ASC'))->result_array();
     $jml_komentar = $this->m_basic->getAllData('komentar_ta', array('id_bimbingan_ta' => $id_bimbingan))->num_rows();
     $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
 
-    $data['bimbinganOnline'] = $data_bimbingan;
+    $data['bimbingan'] = $data_bimbingan;
     $data['komentar'] = $data_komentar;
     $data['user'] = $user[0];
+    $data['tipe'] = $tipe;
     $data['timeago'] = $this->time_elapsed_string( date('Y:m:d H:i:s', strtotime($data_bimbingan[0]['tgl_input'])) );
 
-    $this->load_view('ta/detail_bimbingan_online', $data);
+    $this->load_view('ta/detail_bimbingan', $data);
 
     //add komentar
     $addComment = $this->input->post('addComment');
@@ -252,11 +212,8 @@ class Ta extends CI_Controller {
       $this->configFile();
 
 			if (!$this->upload->do_upload('file_doc')) {
+
 				$this->m_basic->insertData('komentar_ta', $data);
-
-        $this->session->set_flashdata('success', true);
-
-        redirect($this->uri->uri_string());
 
       } else {
 
@@ -265,11 +222,11 @@ class Ta extends CI_Controller {
 				$data['file'] = $fileinfo['file_name'];
 				$this->m_basic->insertData('komentar_ta', $data);
 
-				$this->session->set_flashdata('success', true);
+      }
+      
+      $this->session->set_flashdata('success', true);
 
-        redirect($this->uri->uri_string());
-
-			}
+      redirect($this->uri->uri_string());
     }
   }
 
@@ -280,7 +237,16 @@ class Ta extends CI_Controller {
 
   function timeline_bimbingan()
   {
-    $this->load_view('ta/timeline_bimbingan');
+    $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
+    $data['user'] = $user[0];
+
+    $data_ta = $this->m_basic->getAllData('v_tugas_akhir', array('npm' => $this->session->npm))->result_array();
+    $bimbingan = $this->m_basic->getAllData('bimbingan_ta', array('id_ta' => $this->session->id_ta), array('tgl_bimbingan' => 'DESC'))->result_array();
+
+    $data['ta'] = $data_ta[0];
+    $data['bimbingan'] = $bimbingan;
+
+    $this->load_view('ta/timeline_bimbingan', $data);
   }
 
 }
