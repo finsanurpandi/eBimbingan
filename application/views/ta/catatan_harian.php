@@ -36,12 +36,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Bimbingan
+        Catatan Harian
       </h1>
       <ol class="breadcrumb">
         <li><a href="#">Dashboard</a></li>
         <li>Aktivitas</li>
-        <li><strong>Bimbingan</strong></li>
+        <li><strong>Catatan Harian</strong></li>
       </ol>
     </section>
 
@@ -56,7 +56,7 @@
             <!-- /.box-header -->
             <div class="box-body box-profile">
 <!-- Content Here -->
-<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addBimbingan"><i class="fa fa-plus"></i> Tambah Data</button>
+<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addCatatanHarian"><i class="fa fa-plus"></i> Tambah Data</button>
 <br/>
 <br />
 
@@ -78,9 +78,8 @@
   <thead>
     <tr>
       <th>#</th>
-      <th>Topik</th>
-      <th>Tipe Bimbingan</th>
-      <th>Status</th>
+      <th>Nama Kegiatan</th>
+      <th>Waktu Kegiatan</th>
     </tr>
   </thead>
   <tbody>
@@ -89,61 +88,28 @@
 $i = 1;
 $id_ta = $this->session->id_ta;
 
-foreach ($bimbingan as $key => $value) {
-  $detail = base_url('ta/detail_bimbingan').'/'.$this->encrypt->encode($value['id_bimbingan_ta']).'/'.$this->encrypt->encode($value['tipe']);
+foreach ($catatan_harian as $key => $value) {
+  $detail = base_url('ta/detail_catatan_harian').'/'.$this->encrypt->encode($value['id_catatan_harian']);
 ?>
 
     <tr>
       <td><?=$i?></td>
       <td>
-        <a href="<?=$detail?>" class=""><strong><?=$value['topik']?></strong></a>
-        
-        <?php
-          foreach ($count as $key => $nilai) {
-            if ($key === $value['id_bimbingan_ta']) {
-              echo "<span class='badge badge-danger'>";
-              echo $nilai;
-              echo "</span>";
-            }
-          }
-        ?>
-        
+      <a href="<?=$detail?>" class=""><strong><?=$value['nama_kegiatan']?></strong></a>
+        </a>
         <br />
-        <small><span class="time" id="time"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($value['tgl_input'])) )?></span></small>
+        <small><span class="time" id="time"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($value['waktu_kegiatan'])) )?></span></small>
+        <div class="collapse" id="kegiatan<?=$i?>">
+            <div class="well">
+                <?=$value['uraian_kegiatan']?>
+            </div>
+        </div>
       </td>
       <td>
-      <?php
-
-        if($value['tipe'] == 'offline')
-        {
-            echo "<span class='label label-primary'>".ucwords($value['tipe']);
-        } else {
-            echo "<span class='label label-warning'>".ucwords($value['tipe']);
-        }
-      
-      ?>
+      <?=date('d M. Y',strtotime($value['waktu_kegiatan']))?>
       </td>
 
 <?php
-if($value['tipe'] == 'offline')
-{
-    if ($value['status_validasi'] == 0) {
-        echo "<td><span class='label label-warning'>pending</span></td>";
-    } else {
-        echo "<td><span class='label label-success'>approved</span></td>";
-    }
-
-} else {
-
-    if ($value['status_open'] == 0 && $value['status_validasi'] == 0) {
-        echo "<td><span class='label label-danger'>unread</span></td>";
-    } elseif ($value['status_open'] == 1 && $value['status_validasi'] == 0) {
-        echo "<td><span class='label label-warning'>on process</span></td>";
-    } elseif ($value['status_open'] == 1 && $value['status_validasi'] == 1) {
-        echo "<td><span class='label label-success'>closed</span></td>";
-    }
-
-}
 $i++;
 ?>
 
@@ -163,9 +129,3 @@ $i++;
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
-  <script src="<?=base_url()?>assets/bower_components/jquery/dist/jquery.min.js"></script>
-  <script>
-    
-
-  </script>

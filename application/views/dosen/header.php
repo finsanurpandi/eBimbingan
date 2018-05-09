@@ -23,7 +23,7 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="<?=base_url()?>assets/img/profiles/<?=$user['img_profile']?>" class="user-image" alt="User Image">
-              <span class="hidden-xs"><?=$this->session->nama_mhs?></span>
+              <span class="hidden-xs"><?=$this->session->nama_dosen?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -31,8 +31,8 @@
                 <img src="<?=base_url()?>assets/img/profiles/<?=$user['img_profile']?>" class="img-circle" onclick="confirm('Are you sure to logout?')" alt="User Image">
 
                 <p>
-                  <?=$user['npm'].' - '.$user['nama_mhs']?>
-                  <small>Angkatan <?=$user['tahun_masuk']?></small>
+                  <?=$user['nama_dosen']?>
+                  <small><?=$user['nidn']?></small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -40,10 +40,10 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="<?=base_url()?>ta/settings" class="btn btn-default btn-flat btn-sm">Settings</a>
+                  <a href="<?=base_url()?>dosen/settings" class="btn btn-default btn-flat btn-sm">Settings</a>
                 </div>
                 <div class="pull-right">
-                  <a href="<?=base_url()?>login/logout/ta" class="btn btn-default btn-flat btn-sm">Log out</a>
+                  <a href="<?=base_url()?>login/logout/dosen" class="btn btn-default btn-flat btn-sm">Log out</a>
                 </div>
               </li>
             </ul>

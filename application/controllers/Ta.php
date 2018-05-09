@@ -10,19 +10,19 @@ class Ta extends CI_Controller {
     $this->load->library('upload');
   }
 
-  // function configImage()
-	// {
-	// 	$user = $this->session->npm;
-	// 	$nmfile = "img_".$user."_".time();
-	// 	$config['upload_path']   =   "./assets/img/profiles/";
-	// 	$config['allowed_types'] =   "gif|jpg|jpeg|png"; 
-	// 	$config['max_size']      =   "1000";
-	// 	$config['max_width']     =   "1907";
-	// 	$config['max_height']    =   "1280";
-	// 	$config['file_name']     =   $nmfile;
+  function configImage()
+	{
+		$user = $this->session->npm;
+		$nmfile = "img_".$user."_".time();
+		$config['upload_path']   =   "./assets/img/profiles/";
+		$config['allowed_types'] =   "gif|jpg|jpeg|png"; 
+		$config['max_size']      =   "1000";
+		$config['max_width']     =   "1907";
+		$config['max_height']    =   "1280";
+		$config['file_name']     =   $nmfile;
  
-	// 	$this->upload->initialize($config);
-  // }
+		$this->upload->initialize($config);
+  }
   
   function configFile()
 	{
@@ -50,6 +50,28 @@ class Ta extends CI_Controller {
 
     $this->load->view('ta/modal', $data);
     $this->load->view('footer');
+  }
+
+  function check_session()
+  {
+    $session = $this->session->userdata('login_in');
+    $role = $this->session->userdata('role');
+
+		if ($session == FALSE || $session == null) {
+			redirect('login/ta', 'refresh');
+    } 
+    // else {
+    //   if ($role === 1) {
+    //     redirect('ta', 'refresh');
+    //   } elseif ($role === 2) {
+    //     redirect('kp', 'refresh');
+    //   } elseif ($role === 3) {
+    //     redirect('dosen', 'refresh');
+    //   } elseif ($role === 4) {
+    //     redirect('prodi', 'refresh');
+    //   }
+    // }
+
   }
 
   function time_elapsed_string($datetime, $full = false) {
@@ -83,11 +105,24 @@ class Ta extends CI_Controller {
 
 	public function index()
 	{
-		$this->load_view('ta/dashboard');
+    $this->check_session();
+
+    $ta = $this->m_basic->getAllData('v_tugas_akhir', array('npm' => $this->session->npm))->result_array();
+    $bimbingan = $this->m_basic->getAllData('bimbingan_ta', array('id_ta' => $this->session->id_ta, 'status_validasi' => 1));
+    $catatan_harian = $this->m_basic->getAllData('catatan_harian', array('id_ta' => $this->session->id_ta));
+    $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
+    $data['user'] = $user[0];
+    $data['ta'] = $ta[0];
+    $data['bimbingan'] = $bimbingan;
+    $data['catatan'] = $catatan_harian;
+
+		$this->load_view('ta/dashboard', $data);
 	}
 
-  function ta_detail()
+  function detail()
   {
+    $this->check_session();
+
     $ta = $this->m_basic->getAllData('v_tugas_akhir', array('npm' => $this->session->npm))->result_array();
     $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
     $data['user'] = $user[0];
@@ -98,24 +133,83 @@ class Ta extends CI_Controller {
 
   function catatan_harian()
   {
+    $this->check_session();
+
     $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
     $data['user'] = $user[0];
-    $this->load_view('ta/catatan_harian');
+    $catatan_harian = $this->m_basic->getAllData('catatan_harian', array('id_ta' => $this->session->id_ta), array('waktu_kegiatan' => 'DESC'))->result_array();
+    $data['catatan_harian'] = $catatan_harian;
+
+    $this->load_view('ta/catatan_harian', $data);
+
+    // add catatan harian
+    $addCatatan = $this->input->post('addCatatanHarian');
+
+    if(isset($addCatatan))
+    {
+      date_default_timezone_set("Asia/Bangkok");
+      $date = new DateTime();
+      $timenow = $date->format('Y-m-d H:i:s');
+      $tgl_kegiatan = $this->input->post('tgl_kegiatan').' '.$this->input->post('waktu_kegiatan');
+      $id_catatan_harian = hash('ripemd160', 'catatan_harian_'.$this->session->npm.'_'.$timenow);
+
+      $data = array(
+        'id_catatan_harian' => $id_catatan_harian,
+        'id_ta' => $this->session->id_ta,
+        'nama_kegiatan' => $this->input->post('nama_kegiatan'),
+        'uraian_kegiatan' => $this->input->post('uraian_kegiatan'),
+        'waktu_kegiatan' => date('Y-m-d H:m:s',strtotime($tgl_kegiatan)),
+        'waktu_input' => $timenow
+      );
+
+      $this->m_basic->insertData('catatan_harian', $data);
+
+      $this->session->set_flashdata('success', true);
+
+      redirect($this->uri->uri_string());
+    }
   }
 
-  function detail_catatan_harian()
+  function detail_catatan_harian($id_catatan_harian)
   {
+    $this->check_session();
+
+    $id_catatan_harian = $this->encrypt->decode($id_catatan_harian);
+
     $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
     $data['user'] = $user[0];
-    $this->load_view('ta/detail_catatan_harian');
+    $data_catatan_harian = $this->m_basic->getAllData('catatan_harian', array('id_catatan_harian' => $id_catatan_harian))->result_array();
+
+    $data['catatan_harian'] = $data_catatan_harian;
+    $data['user'] = $user[0];
+    $data['timeago'] = $this->time_elapsed_string( date('Y:m:d H:i:s', strtotime($data_catatan_harian[0]['waktu_kegiatan'])) );
+
+    $this->load_view('ta/detail_catatan_harian', $data);
   }
 
   function bimbingan()
   {
+    $this->check_session();
+
     $bimbingan = $this->m_basic->getAllData('bimbingan_ta', array('id_ta' => $this->session->id_ta), array('tgl_bimbingan' => 'DESC'))->result_array();
+    $bimbinganOnline = $this->m_basic->getAllData('bimbingan_ta', array('id_ta' => $this->session->id_ta, 'tipe' => 'online'))->result_array();
     $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
     $data['user'] = $user[0];
     $data['bimbingan'] = $bimbingan;
+    $komentar = $this->m_basic->getAllData('komentar_ta', array('id_ta' => $this->session->id_ta, 'pengirim !=' => $this->session->nama_mhs,'status' => 0))->result_array();
+
+    $count = array();
+
+    for ($i=0; $i < count($bimbinganOnline); $i++) { 
+      $index = 0;
+      for ($j=0; $j < count($komentar); $j++) { 
+        if ($bimbinganOnline[$i]['id_bimbingan_ta'] === $komentar[$j]['id_bimbingan_ta']) {
+          @$count[$bimbinganOnline[$i]['id_bimbingan_ta']] += 1;
+        }
+      }
+    }
+
+    $data['count'] = $count;
 
     $this->load_view('ta/bimbingan', $data);
 
@@ -175,8 +269,22 @@ class Ta extends CI_Controller {
 
   function detail_bimbingan($id_bimbingan, $tipe)
   {
+    $this->check_session();
+
     $id_bimbingan = $this->encrypt->decode($id_bimbingan);
     $tipe = $this->encrypt->decode($tipe);
+
+    // update koment
+    $komentar = $this->m_basic->getAllData('komentar_ta', array('id_bimbingan_ta' => $id_bimbingan, 'pengirim !=' => $this->session->nama_mhs,'status' => 0))->result_array();
+    $komentarNum = $this->m_basic->getAllData('komentar_ta', array('id_bimbingan_ta' => $id_bimbingan, 'pengirim !=' => $this->session->nama_mhs,'status' => 0))->num_rows();
+    
+    if ($komentarNum > 0) {
+      for ($i=0; $i < count($komentar); $i++) { 
+        if ($komentar[$i]['id_bimbingan_ta'] == $id_bimbingan) {
+          $this->m_basic->updateData('komentar_ta', array('status' => 1), array('id_bimbingan_ta' => $komentar[$i]['id_bimbingan_ta']));
+        }
+      }
+    }
 
     $data_bimbingan = $this->m_basic->getAllData('bimbingan_ta', array('id_bimbingan_ta' => $id_bimbingan))->result_array();
     $data_komentar = $this->m_basic->getAllData('komentar_ta', array('id_bimbingan_ta' => $id_bimbingan), array('datetime_sent' => 'ASC'))->result_array();
@@ -202,6 +310,7 @@ class Ta extends CI_Controller {
       $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
 
       $data = array(
+        'id_ta' => $this->session->id_ta,
         'id_bimbingan_ta' => $id_bimbingan,
         'pengirim' => $this->session->nama_mhs,
         'komentar' => $this->input->post('komentar'),
@@ -232,11 +341,24 @@ class Ta extends CI_Controller {
 
   function timeline_catatan_harian()
   {
-    $this->load_view('ta/timeline_catatan_harian');
+    $this->check_session();
+
+    $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
+    $data['user'] = $user[0];
+
+    $data_ta = $this->m_basic->getAllData('v_tugas_akhir', array('npm' => $this->session->npm))->result_array();
+    $catatan_harian = $this->m_basic->getAllData('catatan_harian', array('id_ta' => $this->session->id_ta), array('waktu_kegiatan' => 'DESC'))->result_array();
+
+    $data['ta'] = $data_ta[0];
+    $data['catatan_harian'] = $catatan_harian;
+
+    $this->load_view('ta/timeline_catatan_harian', $data);
   }
 
   function timeline_bimbingan()
   {
+    $this->check_session();
+
     $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
     $data['user'] = $user[0];
 
@@ -247,6 +369,43 @@ class Ta extends CI_Controller {
     $data['bimbingan'] = $bimbingan;
 
     $this->load_view('ta/timeline_bimbingan', $data);
+  }
+
+  function settings()
+  {
+    $this->check_session();
+
+    $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
+    $data['user'] = $user[0];
+
+    $this->load_view('ta/settings', $data);
+
+    $updateProfil = $this->input->post('updateProfil');
+
+    if (isset($updateProfil)) {
+
+      $img_path = $this->input->post('path');
+      
+      if ($img_path !== 'patrick.jpg' || $img_path !== 'spongebob.jpg' || $img_path !== 'squidward.jpg') {
+        @unlink("./assets/img/profiles/". $img_path);
+      }
+
+			$this->configImage('profiles');
+
+			if ($this->upload->do_upload('gambar')) {
+
+				$fileinfo = $this->upload->data();
+
+        $dataupload['img_profile'] = $fileinfo['file_name'];
+        
+				$this->m_basic->updateData('mahasiswa', $dataupload, array('npm' => $this->session->npm));
+
+				$this->session->set_flashdata('success', true);
+
+        redirect($this->uri->uri_string());
+
+			}
+    }
   }
 
 }

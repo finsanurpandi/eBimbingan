@@ -54,7 +54,48 @@
       </div>
       <div class="modal-footer">
         <button type="reset" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary btn-sm" name="addBimbingan" id="btnAddBimbinganOffline">Submit</button>
+        <button type="submit" class="btn btn-success btn-sm" name="addBimbingan" id="btnAddBimbinganOffline">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tambah data bimbingan online -->
+<div class="modal fade modal-primary-custom" id="addCatatanHarian" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Tambah Data Catatan Harian</h4>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="">
+
+        <div class="form-group">
+            <label for="npm">Nama Kegiatan</label>
+            <input class="form-control" type="text" name="nama_kegiatan" required>
+        </div>
+
+        <div class="form-group">
+            <label for="npm">Uraian Kegiatan</label>
+            <textarea class="form-control" name="uraian_kegiatan" rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="nama">Tanggal Kegiatan</label>
+            <input class="form-control" type="date" name="tgl_kegiatan" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="nama">Waktu Kegiatan</label>
+            <input class="form-control" type="time" name="waktu_kegiatan" required/>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="reset" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-success btn-sm" name="addCatatanHarian">Submit</button>
         </form>
       </div>
     </div>

@@ -47,7 +47,7 @@
 
 <strong>Tanggal Acc Proposal</strong>
 <p class="text-muted">
-<?=$ta['tgl_acc']?>
+<?=date('d M. Y',strtotime($ta['tgl_acc']))?>
 </p>
 <hr>
 <!-- End of content -->

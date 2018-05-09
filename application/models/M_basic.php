@@ -68,9 +68,11 @@ class M_basic extends CI_Model {
 
 		$this->db->select($row);
 
-		foreach ($order as $key => $value) {
+		if ($order !== null) {
+			foreach ($order as $key => $value) {
 				$this->db->order_by($key, $value);
 			}
+		}
 
 		$query = $this->db->get($table);
 

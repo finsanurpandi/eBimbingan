@@ -57,21 +57,21 @@ $.widget.bridge('uibutton', $.ui.button);
 <script src="<?=base_url()?>assets/js/custom.js"></script>
 <script>
   var baseurl = "<?=base_url()?>";
-  console.log(baseurl);
+  // console.log(baseurl);
 
-  function getNumComment(id_bimbingan_ta)
-  {
-      console.log(id_bimbingan_ta);
-      $.ajax({
-          method: "post",
-          url: baseurl+"ajax/getNumComment",
-          data: {id_bimbingan_ta:id_bimbingan_ta},
-          success: function(res){
-              $('#numComment').text(res);
-              console.log(res);
-          }
-      });
-  }
+  // function getNumComment(id_bimbingan_ta)
+  // {
+  //     console.log(id_bimbingan_ta);
+  //     $.ajax({
+  //         method: "post",
+  //         url: baseurl+"ajax/getNumComment",
+  //         data: {id_bimbingan_ta:id_bimbingan_ta},
+  //         success: function(res){
+  //             $('#numComment').text(res);
+  //             console.log(res);
+  //         }
+  //     });
+  // }
 </script>
 </body>
 </html>

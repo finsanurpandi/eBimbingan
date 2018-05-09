@@ -25,44 +25,44 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu" data-widget="tree">
       <li class="header">MAIN NAVIGATION</li>
-      <li class="active">
+      <li id="taDashboard">
         <a href="<?=base_url()?>ta">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
-      <li>
-        <a href="<?=base_url()?>ta/ta_detail">
+      <li id="taDetail">
+        <a href="<?=base_url()?>ta/detail">
           <i class="fa fa-bandcamp"></i> <span>Tugas Akhir</span>
         </a>
       </li>
-      <li class="treeview">
+      <li id="taAktivitas" class="treeview">
         <a href="#">
-          <i class="fa fa-institution"></i> <span>Aktivitas</span>
+          <i class="fa fa-th-list"></i> <span>Aktivitas</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="<?=base_url()?>ta/catatan_harian"><i class="fa fa-circle-o"></i> Catatan Harian</a></li>
-          <li><a href="<?=base_url()?>ta/bimbingan"><i class="fa fa-circle-o"></i> Bimbingan</a></li>
+          <li id="taCatatanHarian"><a href="<?=base_url()?>ta/catatan_harian"><i class="fa fa-circle-o"></i> Catatan Harian</a></li>
+          <li id="taBimbingan"><a href="<?=base_url()?>ta/bimbingan"><i class="fa fa-circle-o"></i> Bimbingan</a></li>
           <!-- <li><a href="<?=base_url()?>ta/bimbingan_online"><i class="fa fa-circle-o"></i> Bimbingan Online</a></li> -->
         </ul>
       </li>
-      <li class="treeview">
+      <li id="taTimeline" class="treeview">
         <a href="#">
-          <i class="fa fa-institution"></i> <span>Timeline</span>
+          <i class="fa fa-clock-o"></i> <span>Timeline</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li class="active"><a href="<?=base_url()?>ta/timeline_catatan_harian"><i class="fa fa-circle-o"></i> Catatan Harian</a></li>
-          <li><a href="<?=base_url()?>ta/timeline_bimbingan"><i class="fa fa-circle-o"></i> Bimbingan</a></li>
+          <li id="taTimelineCatatanHarian"><a href="<?=base_url()?>ta/timeline_catatan_harian"><i class="fa fa-circle-o"></i> Catatan Harian</a></li>
+          <li id="taTimelineBimbingan"><a href="<?=base_url()?>ta/timeline_bimbingan"><i class="fa fa-circle-o"></i> Bimbingan</a></li>
         </ul>
       </li>
       <li>
         <a href="<?=base_url()?>">
-          <i class="fa fa-bandcamp"></i> <span>Pengajuan Seminar/Sidang</span>
+          <i class="fa fa-thumbs-up"></i> <span>Pengajuan Seminar/Sidang</span>
         </a>
       </li>
     </ul>
@@ -70,3 +70,40 @@
   </section>
   <!-- /.sidebar -->
 </aside>
+
+<script src="<?=base_url()?>assets/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+  var uri = '<?=$this->uri->segment(2)?>';
+
+  function taClearMenu(){
+    $('#taDashboard').remove('.active');
+    $('#taDetail').remove('.active');
+    $('#taBimbingan').remove('.active');
+    $('#taCatatanHarian').remove('.active');
+    $('#taTimelineBimbingan').remove('.active');
+    $('#taTimelineCatatanHarian').remove('.active');
+
+    $('#taAktivitas').remove('.active');
+    $('#taTimeline').remove('.active');
+  }
+
+  if (uri == '') {
+    taClearMenu();
+    $('#taDashboard').addClass('active');
+  } else if (uri == 'detail') {
+    $('#taDetail').addClass('active');
+  } else if (uri == 'bimbingan' || uri == 'detail_bimbingan') {
+    $('#taAktivitas').addClass('active');
+    $('#taBimbingan').addClass('active');
+  } else if (uri == 'catatan_harian' || uri == 'detail_catatan_harian') {
+    $('#taAktivitas').addClass('active');
+    $('#taCatatanHarian').addClass('active');
+  } else if (uri == 'timeline_bimbingan') {
+    $('#taTimeline').addClass('active');
+    $('#taTimelineBimbingan').addClass('active');
+  } else if (uri == 'timeline_catatan_harian') {
+    $('#taTimeline').addClass('active');
+    $('#taTimelineCatatanHarian').addClass('active');
+  }
+</script>
+

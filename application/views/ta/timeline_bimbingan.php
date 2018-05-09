@@ -80,7 +80,7 @@
             <?php 
               if ($value['tipe'] == 'offline') {
             ?>
-              <i class="fa fa-envelope bg-blue"></i>
+              <i class="fa fa-pencil bg-blue"></i>
             
             <?php
               } else {
@@ -123,12 +123,16 @@
             <!-- /.timeline-label -->
             <!-- timeline item -->
             <li>
-              <i class="fa fa-user bg-aqua"></i>
+              <i class="fa fa-heart bg-aqua"></i>
 
               <div class="timeline-item">
                 <span class="time"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($ta['tgl_acc'])) )?></span>
 
                 <h3 class="timeline-header no-border">Proposal Disetujui</h3>
+
+                <div class="timeline-body">
+                <img src="<?=base_url()?>assets/img/rocket-launch.jpg" class="img img-responsive" width="300px"/>
+                </div>
               </div>
             </li>
             <!-- END timeline item -->

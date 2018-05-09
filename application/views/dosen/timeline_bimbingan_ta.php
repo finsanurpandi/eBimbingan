@@ -35,14 +35,17 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
+      <h1><?=$ta['npm'].' - '.$ta['nama_mhs']?></h1>
       <h1>
         Timeline
-        <small>Catatan Harian</small>
+        <small>Bimbingan</small>
       </h1>
+      <a href="javascript:history.back()" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
+      <br/><br/>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li>Timeline</li>
-        <li class="active">Catatan Harian</li>
+        <li class="active">Bimbingan</li>
       </ol>
     </section>
 
@@ -54,33 +57,58 @@
         <div class="col-md-12">
 
 <?php
-        foreach ($catatan_harian as $key => $value) {
-          $detail = base_url('ta/detail_catatan_harian').'/'.$this->encrypt->encode($value['id_catatan_harian']);
+        foreach ($bimbingan as $key => $value) {
+          $detail = base_url('ta/detail_bimbingan').'/'.$this->encrypt->encode($value['id_bimbingan_ta']).'/'.$this->encrypt->encode($value['tipe']);
 ?>
 
           <!-- The time line -->
           <ul class="timeline">
             <!-- timeline time label -->
             <li class="time-label">
-                <span class='bg-green'>
-                  <?=date("d M. Y", strtotime($value['waktu_kegiatan']))?>
-                </span>
+            <?php
+              if ($value['status_validasi'] == 0) {
+            ?>
+                  <span class="bg-red">
+            <?php 
+              } else {
+                echo "<span class='bg-green'>";
+              }
+            ?>
+                  <?=date("d M. Y", strtotime($value['tgl_bimbingan']))?>
+                  </span>
             </li>
             <!-- /.timeline-label -->
             <!-- timeline item -->
             <li>
-            <i class="fa fa-pencil bg-yellow"></i>
+            <?php 
+              if ($value['tipe'] == 'offline') {
+            ?>
+              <i class="fa fa-pencil bg-blue"></i>
+            
+            <?php
+              } else {
+                echo "<i class='fa fa-comments bg-yellow'></i>";
+              }
+            ?>
 
               <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($value['waktu_kegiatan'])) )?></span>
+                <span class="time"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($value['tgl_bimbingan'])) )?></span>
 
-                <h3 class="timeline-header"><a href="<?=$detail?>"><?=$value['nama_kegiatan']?></a></h3>
+                <h3 class="timeline-header"><a href="<?=$detail?>"><?=$value['topik']?></a> <em><?=$value['tipe']?></em></h3>
 
                 <div class="timeline-body">
-                <?=$value['uraian_kegiatan']?>
+                <?=$value['pembahasan']?>
                 </div>
                 <div class="timeline-footer">
-                  <a class='btn btn-primary btn-xs' href="<?=$detail?>">Read more</a>
+                  <?php
+                    if ($value['tipe'] === 'online') {
+                      echo "<a class='btn btn-warning btn-xs' href='".$detail."'>See Conversation</a>";
+                    } else {
+                      echo "<a class='btn btn-primary btn-xs' href='".$detail."'>Read more</a>";
+                    }
+                    
+                  ?>
+                  
                 </div>
               </div>
             </li>
@@ -120,7 +148,7 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-
+      <hr><a href="javascript:history.back()" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
 
             <!-- /.box-body -->
           </div>
