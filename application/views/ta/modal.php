@@ -35,11 +35,13 @@
         <div class="form-group">
             <label for="nama">Tanggal Bimbingan</label>
             <input class="form-control" type="date" name="tgl_bimbingan" id="tgl_bimbingan"/>
+            <p class="text-muted">mm/dd/yyyy</p>
         </div>
 
         <div class="form-group">
             <label for="nama">Waktu Bimbingan</label>
             <input class="form-control" type="time" name="waktu_bimbingan" id="waktu_bimbingan"/>
+            <p class="text-muted">hh:mm PM</p>
         </div>
       </div>
 

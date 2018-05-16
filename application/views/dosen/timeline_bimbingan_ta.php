@@ -29,6 +29,15 @@
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
 
+    function limit_text($text, $limit) {
+      if (str_word_count($text, 0) > $limit) {
+          $words = str_word_count($text, 2);
+          $pos = array_keys($words);
+          $text = substr($text, 0, $pos[$limit]) . '...';
+      }
+      return $text;
+    }
+
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -40,12 +49,12 @@
         Timeline
         <small>Bimbingan</small>
       </h1>
-      <a href="javascript:history.back()" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
+      <a href="<?=base_url()?>dosen/ta" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
       <br/><br/>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li>Timeline</li>
-        <li class="active">Bimbingan</li>
+        <li><a href="<?=base_url()?>dosen"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?=base_url()?>dosen/ta">Tugas Akhir</a></li>
+        <li class="active"><strong>Timeline</strong></li>
       </ol>
     </section>
 
@@ -55,14 +64,16 @@
       <!-- row -->
       <div class="row">
         <div class="col-md-12">
-
+        <!-- The time line -->
+        <ul class="timeline">
 <?php
+if (count($bimbingan) > 0) {
+
         foreach ($bimbingan as $key => $value) {
-          $detail = base_url('ta/detail_bimbingan').'/'.$this->encrypt->encode($value['id_bimbingan_ta']).'/'.$this->encrypt->encode($value['tipe']);
+          $detail = base_url('dosen/detail_bimbingan').'/'.$this->encrypt->encode($ta['npm']).'/'.$this->encrypt->encode($value['id_bimbingan_ta']).'/'.$this->encrypt->encode($value['tipe']);
 ?>
 
-          <!-- The time line -->
-          <ul class="timeline">
+          
             <!-- timeline time label -->
             <li class="time-label">
             <?php
@@ -97,7 +108,7 @@
                 <h3 class="timeline-header"><a href="<?=$detail?>"><?=$value['topik']?></a> <em><?=$value['tipe']?></em></h3>
 
                 <div class="timeline-body">
-                <?=$value['pembahasan']?>
+                <?=limit_text($value['pembahasan'], 30)?>
                 </div>
                 <div class="timeline-footer">
                   <?php
@@ -113,7 +124,7 @@
               </div>
             </li>
             <!-- END timeline item -->
-<?php } ?>
+<?php } }?>
             
 
 
@@ -148,7 +159,7 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-      <hr><a href="javascript:history.back()" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
+      <hr><a href="<?=base_url()?>dosen/ta" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
 
             <!-- /.box-body -->
           </div>

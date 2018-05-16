@@ -50,7 +50,7 @@
     <!-- About Me Box -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><?=$this->session->npm.' - '.$this->session->nama_mhs?></h3>
+              <h3 class="box-title"><?=$this->session->nidn.' - '.$this->session->nama_dosen?></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body box-profile">

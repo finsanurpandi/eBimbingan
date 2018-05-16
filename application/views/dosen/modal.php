@@ -1,5 +1,5 @@
 <!-- Tambah data bimbingan online -->
-<div class="modal fade modal-primary-custom" id="viewDetailTa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade modal-info-custom" id="viewDetailTa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -39,6 +39,33 @@
     </div>
   </div>
 </div>
+
+<!-- Decline Bimbingan -->
+<div class="modal modal-danger-custom fade" id="declineBimbingan">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"><i class="fa fa-remove"></i> Decline</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure want to decline this subject?</p>
+      </div>
+      <div class="modal-footer">
+        <form method="post">
+          <input type="hidden" name="komentar" id="commentValue">
+          <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-danger btn-sm" name="decline">Decline</button>
+        </form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 <script src="<?=base_url()?>assets/bower_components/jquery/dist/jquery.min.js"></script>
 <script>

@@ -36,13 +36,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Catatan Harian
+        Data Catatan Harian Mahasiswa
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#">Dashboard</a></li>
-        <li>Aktivitas</li>
-        <li><a href="#">Catatan Harian</a></li>
-        <li><strong>Detail</strong></li>
+        <li><a href="<?=base_url()?>dosen"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li>Tugas Akhir</li>
+        <li><a href="<?=base_url()?>dosen/catatan_harian">Catatan Harian</a></li>
+        <li class="active"><strong><?=$mhs['npm']?></strong></li>
       </ol>
     </section>
 
@@ -52,23 +52,48 @@
     <!-- About Me Box -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><?=$this->session->npm.' - '.$this->session->nama_mhs?></h3>
+              <h3 class="box-title"><?=$mhs['npm'].' - '.$mhs['nama_mhs']?></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body box-profile">
 <!-- Content Here -->
+<a href="<?=base_url()?>dosen/catatan_harian" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
+<br/>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title"><?=$catatan_harian[0]['nama_kegiatan']?> <small> <span class="time pull-right"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($catatan_harian[0]['waktu_kegiatan'])) )?></span></small></h3>
-  </div>
-  <div class="panel-body">
-    <?=$catatan_harian[0]['uraian_kegiatan']?>
-  </div>
-</div>
+<table class="table table-border">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Topik</th>
+      <th>Tanggal Kegiatan</th>
+    </tr>
+  </thead>
+  <tbody>
 
+<?php
+$i = 1;
+$id_ta = $this->session->id_ta;
 
-<a href="<?=base_url($this->session->url)?>" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
+foreach ($catatan as $key => $value) {
+  $detail = base_url('dosen/detail_catatan').'/'.$this->encrypt->encode($mhs['npm']).'/'.$this->encrypt->encode($value['id_catatan_harian']);
+?>
+
+    <tr>
+      <td><?=$i?></td>
+      <td>
+        <a href="<?=$detail?>" class=""><strong><?=$value['nama_kegiatan']?></strong></a>
+        <br />
+        <small>Posted <span class="time" id="time"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($value['waktu_input'])) )?></span></small>
+      </td>
+      <td>
+      <strong><?=date('d M. Y',strtotime($value['waktu_kegiatan']))?></strong>
+      </td>
+    </tr>
+
+<?php } ?>
+
+  </tbody>
+</table>
 <!-- End of content -->
             <!-- /.box-body -->
           </div>

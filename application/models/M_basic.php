@@ -6,8 +6,7 @@ class M_basic extends CI_Model {
 	function __construct()
 	{
 		parent::__construct();
-		// $this->mhs = 'mahasiswa';
-		// $this->account = 'login';
+
 	}
 
 // GET DATA
@@ -151,4 +150,24 @@ class M_basic extends CI_Model {
 		$this->db->update('mhs', $data2);
 		$this->db->trans_complete();
 	}
+
+// DELETE DATA
+
+	function deleteData($table, $where)
+	{
+		$this->db->where($where);
+		$this->db->delete($table);
+	}
+
+// ANOTHER FUNCTION
+	function decline($table1, $data1, $table2, $data2, $where)
+	{
+		$this->db->trans_start();
+		$this->db->insert($table1, $data1);
+		$this->db->where($where);
+		$this->db->update($table2, $data2);
+		$this->db->trans_complete();
+	}
 }
+
+

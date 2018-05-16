@@ -168,6 +168,9 @@ class Ta extends CI_Controller {
 
       redirect($this->uri->uri_string());
     }
+
+    //create session url
+    $this->session->set_userdata('url', $this->uri->uri_string());
   }
 
   function detail_catatan_harian($id_catatan_harian)
@@ -263,8 +266,10 @@ class Ta extends CI_Controller {
       $this->session->set_flashdata('success', true);
 
       redirect($this->uri->uri_string());
-
     }
+
+    //create session url
+    $this->session->set_userdata('url', $this->uri->uri_string());
   }
 
   function detail_bimbingan($id_bimbingan, $tipe)
@@ -353,6 +358,9 @@ class Ta extends CI_Controller {
     $data['catatan_harian'] = $catatan_harian;
 
     $this->load_view('ta/timeline_catatan_harian', $data);
+
+    //create session url
+    $this->session->set_userdata('url', $this->uri->uri_string());
   }
 
   function timeline_bimbingan()
@@ -363,20 +371,26 @@ class Ta extends CI_Controller {
     $data['user'] = $user[0];
 
     $data_ta = $this->m_basic->getAllData('v_tugas_akhir', array('npm' => $this->session->npm))->result_array();
-    $bimbingan = $this->m_basic->getAllData('bimbingan_ta', array('id_ta' => $this->session->id_ta), array('tgl_bimbingan' => 'DESC'))->result_array();
+    $bimbingan = $this->m_basic->getAllData('bimbingan_ta', array('id_ta' => $this->session->id_ta, 'status_validasi' => 1), array('tgl_bimbingan' => 'DESC'))->result_array();
 
     $data['ta'] = $data_ta[0];
     $data['bimbingan'] = $bimbingan;
 
     $this->load_view('ta/timeline_bimbingan', $data);
+
+    //create session url
+    $this->session->set_userdata('url', $this->uri->uri_string());
   }
 
-  function settings()
+  function settings($url)
   {
     $this->check_session();
 
+    $url = $this->encrypt->decode($url);
+
     $user = $this->m_basic->getAllData('mahasiswa', array('npm' => $this->session->npm))->result_array();
     $data['user'] = $user[0];
+    $data['url'] = $url;
 
     $this->load_view('ta/settings', $data);
 
@@ -406,6 +420,9 @@ class Ta extends CI_Controller {
 
 			}
     }
+
+    //create session url
+    $this->session->set_userdata('url', $this->uri->uri_string());
   }
 
 }

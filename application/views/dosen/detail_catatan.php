@@ -39,9 +39,10 @@
         Catatan Harian
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#">Dashboard</a></li>
-        <li>Aktivitas</li>
-        <li><a href="#">Catatan Harian</a></li>
+        <li><a href="<?=base_url()?>dosen">Dashboard</a></li>
+        <li>Tugas Akhir</li>
+        <li><a href="<?=base_url()?>dosen/catatan_harian">Catatan Harian</a></li>
+        <li><a href="<?=base_url($this->session->url)?>"><?=$mhs['npm']?></a></li>
         <li><strong>Detail</strong></li>
       </ol>
     </section>
@@ -52,7 +53,7 @@
     <!-- About Me Box -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><?=$this->session->npm.' - '.$this->session->nama_mhs?></h3>
+              <h3 class="box-title"><?=$mhs['npm'].' - '.$mhs['nama_mhs']?></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body box-profile">
@@ -60,9 +61,11 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title"><?=$catatan_harian[0]['nama_kegiatan']?> <small> <span class="time pull-right"><i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($catatan_harian[0]['waktu_kegiatan'])) )?></span></small></h3>
+    <h3 class="panel-title"><?=$catatan_harian[0]['nama_kegiatan']?> <small> <span class="time pull-right">Posted <i class="fa fa-clock-o"></i> <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($catatan_harian[0]['waktu_input'])) )?></span></small></h3>
   </div>
   <div class="panel-body">
+    <em><?=date('d M. Y', strtotime($catatan_harian[0]['waktu_kegiatan']))?></em>
+    <br/>
     <?=$catatan_harian[0]['uraian_kegiatan']?>
   </div>
 </div>

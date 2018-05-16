@@ -8,6 +8,11 @@
   color: #fff !important;
 }
 
+.modal-info-custom .modal-header {
+  background-color: #5bc0de !important;
+  color: #fff !important;
+}
+
 .modal-success-custom .modal-header {
   background-color: #00a65a !important;
   color: #fff !important;

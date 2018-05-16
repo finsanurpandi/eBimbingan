@@ -43,8 +43,8 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li id="taCatatanHarian"><a href="<?=base_url()?>ta/catatan_harian"><i class="fa fa-circle-o"></i> Catatan Harian</a></li>
           <li id="taBimbingan"><a href="<?=base_url()?>ta/bimbingan"><i class="fa fa-circle-o"></i> Bimbingan</a></li>
+          <li id="taCatatanHarian"><a href="<?=base_url()?>ta/catatan_harian"><i class="fa fa-circle-o"></i> Catatan Harian</a></li>
           <!-- <li><a href="<?=base_url()?>ta/bimbingan_online"><i class="fa fa-circle-o"></i> Bimbingan Online</a></li> -->
         </ul>
       </li>
@@ -56,8 +56,8 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li id="taTimelineCatatanHarian"><a href="<?=base_url()?>ta/timeline_catatan_harian"><i class="fa fa-circle-o"></i> Catatan Harian</a></li>
           <li id="taTimelineBimbingan"><a href="<?=base_url()?>ta/timeline_bimbingan"><i class="fa fa-circle-o"></i> Bimbingan</a></li>
+          <li id="taTimelineCatatanHarian"><a href="<?=base_url()?>ta/timeline_catatan_harian"><i class="fa fa-circle-o"></i> Catatan Harian</a></li>
         </ul>
       </li>
       <li>

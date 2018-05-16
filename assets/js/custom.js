@@ -3,21 +3,31 @@ window.setTimeout(function() {
     $(".alert.alert-success").fadeTo(500, 0).slideUp(500, function(){
         $(this).remove();
     });
+    $(".alert.alert-danger").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove();
+    });
 }, 3000);
 
-// function getNumComment(id_bimbingan_ta)
-// {
-//     console.log(id_bimbingan_ta);
-//     $.ajax({
-//         method: "post",
-//         url: baseurl+"ajax/getNumComment",
-//         data: {id_bimbingan_ta:id_bimbingan_ta},
-//         success: function(res){
-//             $('#numComment').text(res);
-//             console.log(res);
-//         }
-//     });
-// }
+$(document).ready(function(){
+    $('#formDecline').hide();
+
+    $('#btn-decline-post').prop('disabled', true);
+
+    $('#declineComment').keyup(function(e){
+        if (this.value.split(' ').length > 5) {
+            $('#btn-decline-post').prop('disabled', false);
+            $('#commentValue').val(this.value);
+        } else {
+            $('#btn-decline-post').prop('disabled', true);
+        }
+    });
+    
+});
+
+$('#btn-decline').click(function(){
+    $('#formDecline').slideToggle();
+});
+
 
 
 

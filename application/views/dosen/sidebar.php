@@ -30,10 +30,22 @@
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
-      <li id="dosenTugasAkhir">
+      <!-- <li id="dosenTugasAkhir">
         <a href="<?=base_url()?>dosen/ta">
           <i class="fa fa-bandcamp"></i> <span>Tugas Akhir</span>
         </a>
+      </li> -->
+      <li id="dosenTugasAkhir" class="treeview">
+        <a href="#">
+          <i class="fa fa-th-list"></i> <span>Tugas Akhir</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li id="dosenBimbingan"><a href="<?=base_url()?>dosen/ta"><i class="fa fa-circle-o"></i> Bimbingan</a></li>
+          <li id="dosenCatatanHarian"><a href="<?=base_url()?>dosen/catatan_harian"><i class="fa fa-circle-o"></i> Catatan Harian</a></li>
+        </ul>
       </li>
       <li id="dosenKerjaPraktek">
         <a href="<?=base_url()?>dosen/ta">
@@ -58,6 +70,7 @@
   function dosenClearMenu(){
     $('#dosenDashboard').remove('.active');
     $('#dosenTugasAkhir').remove('.active');
+    $('#dosenBimbingan').remove('.active');
     $('#dosenKerjaPraktek').remove('.active');
     $('#dosenPengajuan').remove('.active');
   }
@@ -65,9 +78,13 @@
   if (uri == '') {
     dosenClearMenu();
     $('#dosenDashboard').addClass('active');
-  } else if (uri == 'ta' || uri == 'timeline_bimbingan_ta') {
+  } else if (uri == 'ta' || uri == 'timeline_bimbingan_ta' || uri == 'bimbingan') {
     $('#dosenTugasAkhir').addClass('active');
-  } else if (uri == 'kp' || uri == 'timeline_bimbingan_kp') {
+    $('#dosenBimbingan').addClass('active');
+  } else if (uri == 'catatan_harian' || uri == 'timeline_catatan_harian' || uri == 'catatan_mahasiswa' || uri == 'detail_catatan') {
+    $('#dosenTugasAkhir').addClass('active');
+    $('#dosenCatatanHarian').addClass('active');
+  } else if (uri == 'kp' || uri == 'timeline_bimbingan_kp' || uri == 'catatan_harian') {
     $('#dosenTugasAkhir').addClass('active');
   } else if (uri == 'pengajuan') {
     $('#dosenPengajuan').addClass('active');

@@ -36,11 +36,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Bimbingan Tugas Akhir
+        Catatan Harian Tugas Akhir
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?=base_url()?>dosen">Dashboard</a></li>
-        <li><strong>Tugas Akhir</strong></li>
+        <li>Tugas Akhir</li>
+        <li><strong>Catatan Harian</strong></li>
       </ol>
     </section>
 
@@ -56,26 +57,12 @@
             <div class="box-body box-profile">
 <!-- Content Here -->
 
-<?php
-  if (@$this->session->flashdata('success') == true) {
-?>
-    <div class="alert alert-success">Data berhasil ditambahkan!
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <br/>
-    </div>
-
-<?php
-  }
-?>
-
 <table class="table table-border">
   <thead>
     <tr>
       <th>#</th>
       <th>NPM - Nama</th>
-      <th>Jumlah Bimbingan</th>
+      <th>Jumlah Catatan Harian</th>
       <th>Aksi</th>
     </tr>
   </thead>
@@ -91,18 +78,11 @@ foreach ($ta as $key => $value) {
     <tr>
       <td><?=$i?></td>
       <td>
-        <a href="<?=base_url()?>dosen/bimbingan/<?=$this->encrypt->encode($value['id_ta'])?>/<?=$this->encrypt->encode($value['npm'])?>">
+        <a href="<?=base_url()?>dosen/catatan_mahasiswa/<?=$this->encrypt->encode($value['npm'])?>">
         <strong><?=$value['npm'].' - '.$value['nama_mhs']?></strong>
         </a>
         
         <?php
-        //   foreach ($count as $key => $nilai) {
-        //     if ($key === $value['id_bimbingan_ta']) {
-        //       echo "<span class='badge badge-danger'>";
-        //       echo $nilai;
-        //       echo "</span>";
-        //     }
-        //   }
         ?>
         <br />
         <small>Proposal approved <?=time_elapsed_string( date('Y:m:d H:i:s', strtotime($value['tgl_acc'])) )?></span></small>
@@ -110,38 +90,18 @@ foreach ($ta as $key => $value) {
       </td>
       <td>
 <?php
-$jmlBimbingan = 0;
+$jmlCatatan = 0;
 foreach ($count as $key => $nilai) {
     if ($key == $value['npm']) {
-        echo "<strong>".$nilai.'x</strong>';
-        $jmlBimbingan = $nilai;
+        echo "<strong>".$nilai.' Catatan</strong>';
+        $jmlCatatan = $nilai;
     }
 }
 ?>
       </td>
       <td>
-      <a href="#" class="btn btn-info btn-xs btn-detail-ta" 
-        data-toggle="modal" 
-        data-target="#viewDetailTa"
-        data-nama="<?=$value['nama_mhs']?>"
-        data-npm="<?=$value['npm']?>"
-        data-judul="<?=$value['judul']?>"
-        data-acc="<?=date('d M. Y',strtotime($value['tgl_acc']))?>"
-        >detail</a>
-        <a href="<?=base_url()?>dosen/bimbingan/<?=$this->encrypt->encode($value['id_ta'])?>/<?=$this->encrypt->encode($value['npm'])?>" class="btn btn-success btn-xs">bimbingan 
-<?php
-foreach ($unread as $key => $nilai) {
-  if ($key == $value['npm'] && $nilai > 0) {
-    echo "<span class='badge'>".$nilai."</span>";
-  }
-}
-?>
-        </a>
-
-
-      
-      <a href="<?=base_url()?>dosen/timeline_bimbingan_ta/<?=$this->encrypt->encode($value['npm'])?>/<?=$this->encrypt->encode($value['id_ta'])?>" class="btn btn-warning btn-xs">timeline</a>
-
+        <a href="<?=base_url()?>dosen/catatan_mahasiswa/<?=$this->encrypt->encode($value['npm'])?>" class="btn btn-success btn-xs">detail </a>
+        <a href="<?=base_url()?>dosen/timeline_catatan_harian/<?=$this->encrypt->encode($value['npm'])?>" class="btn btn-warning btn-xs">timeline</a>
       </td>
 
 <?php

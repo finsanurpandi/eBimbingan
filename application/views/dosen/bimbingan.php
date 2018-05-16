@@ -36,12 +36,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Bimbingan
+        Data Bimbingan Mahasiswa
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#">Dashboard</a></li>
-        <li>Aktivitas</li>
-        <li><strong>Bimbingan</strong></li>
+        <li><a href="<?=base_url()?>dosen"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?=base_url()?>dosen/ta">Tugas Akhir</a></li>
+        <li class="active"><strong>Bimbingan</strong></li>
       </ol>
     </section>
 
@@ -51,28 +51,13 @@
     <!-- About Me Box -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><?=$this->session->npm.' - '.$this->session->nama_mhs?></h3>
+              <h3 class="box-title"><?=$mhs['npm'].' - '.$mhs['nama_mhs']?></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body box-profile">
 <!-- Content Here -->
-<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addBimbingan"><i class="fa fa-plus"></i> Tambah Data</button>
+<a href="<?=base_url()?>dosen/ta" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
 <br/>
-<br />
-
-<?php
-  if (@$this->session->flashdata('success') == true) {
-?>
-    <div class="alert alert-success">Data berhasil ditambahkan!
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <br/>
-    </div>
-
-<?php
-  }
-?>
 
 <table class="table table-border">
   <thead>
@@ -90,7 +75,7 @@ $i = 1;
 $id_ta = $this->session->id_ta;
 
 foreach ($bimbingan as $key => $value) {
-  $detail = base_url('ta/detail_bimbingan').'/'.$this->encrypt->encode($value['id_bimbingan_ta']).'/'.$this->encrypt->encode($value['tipe']);
+  $detail = base_url('dosen/detail_bimbingan').'/'.$this->encrypt->encode($mhs['npm']).'/'.$this->encrypt->encode($value['id_bimbingan_ta']).'/'.$this->encrypt->encode($value['tipe']);
 ?>
 
     <tr>
@@ -130,7 +115,7 @@ if($value['tipe'] == 'offline')
     if ($value['status_validasi'] == 0) {
         echo "<td><span class='label label-warning'>pending</span></td>";
     } elseif ($value['status_validasi'] == 2) {
-      echo "<td><span class='label label-danger'>declined</span></td>";
+        echo "<td><span class='label label-danger'>declined</span></td>";
     } else {
         echo "<td><span class='label label-success'>approved</span></td>";
     }

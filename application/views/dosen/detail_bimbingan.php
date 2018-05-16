@@ -48,10 +48,11 @@
         Bimbingan <?=ucwords($tipe)?>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#">Dashboard</a></li>
-        <li>Aktivitas</li>
-        <li><a href="#">Bimbingan <?=ucwords($tipe)?></a></li>
-        <li><strong>Detail</strong></li>
+        <li><a href="<?=base_url()?>dosen"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?=base_url()?>dosen/ta">Tugas Akhir</a></li>
+        <li><a href="<?=base_url()?>dosen/bimbingan/<?=$this->encrypt->encode($bimbingan[0]['id_ta'])?>/<?=$this->encrypt->encode($mhs['npm'])?>">Bimbingan</a></li>
+        <li class="active"><strong>Detail</strong></li>
+
       </ol>
     </section>
 
@@ -61,7 +62,7 @@
     <!-- About Me Box -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><?=$this->session->npm.' - '.$this->session->nama_mhs?></h3>
+              <h3 class="box-title"><?=$mhs['npm'].' - '.$mhs['nama_mhs']?></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body box-profile">
@@ -69,7 +70,7 @@
 <?php
   if (@$this->session->flashdata('success') == true) {
 ?>
-    <div class="alert alert-success">Data berhasil ditambahkan!
+    <div class="alert alert-success">Approve data successed!
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -77,8 +78,15 @@
     </div>
 
 <?php
-  }
+  } elseif (@$this->session->flashdata('danger') == true) {
 ?>
+    <div class="alert alert-danger">Subject has been declined!
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <br/>
+    </div>
+  <?php } ?>
 
 <div class="panel panel-<?=$panel?>">
   <div class="panel-heading">
@@ -88,9 +96,21 @@
     <?=$bimbingan[0]['pembahasan']?>
   </div>
 </div>
-
+<hr/>
+<!-- jika belum validasi -->
 <?php
-if ($bimbingan[0]['status_validasi'] == 2 && $tipe == 'offline') {
+if ($bimbingan[0]['status_validasi'] == 0 && $tipe == 'offline') {
+?>
+
+<p>Waiting for your response...</p>
+<form method="post">
+<!-- <input type="submit" name="decline" class="btn btn-danger btn-xs" value="Decline"> -->
+<button class="btn btn-danger btn-xs" type="button" id="btn-decline">Decline</button>
+<input type="submit" name="accept" class="btn btn-success btn-xs" value="Accept">
+</form>
+<hr/>
+
+<?php } elseif ($bimbingan[0]['status_validasi'] == 2 && $tipe == 'offline') {  
 ?>
 
 <!-- komentar decline -->
@@ -112,6 +132,18 @@ if ($bimbingan[0]['status_validasi'] == 2 && $tipe == 'offline') {
 
 <?php } ?>
 
+<form id="formDecline" method="post">
+<h4>Add some reason why this article are declined</h4>
+  <div class="form-group">
+    <textarea class="form-control" rows="3" name="komentar" id="declineComment" required></textarea>
+    <small>*min 5 words</small>
+    <br/><br/>
+    <!-- <input class="input-sm btn btn-danger btn-sm" value="decline" type="submit" name="decline" /> -->
+    <button type="button" id="btn-decline-post" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#declineBimbingan">decline</button>
+  </div>
+  <hr/>
+</form>
+
 <?php
 if ($tipe === 'online') {
 ?>
@@ -120,6 +152,20 @@ if ($tipe === 'online') {
 <div class="well well-sm">
 <a href="<?=base_url()?>download/file/<?=$this->encrypt->encode($bimbingan[0]['file'])?>" class="" target="_blank"><i class="fa fa-file-word-o"></i> <?=$bimbingan[0]['file']?></a>
 </div>
+
+<!-- jika belum validasi online -->
+<?php
+if ($bimbingan[0]['status_validasi'] == 0 && $tipe == 'online') {
+?>
+
+<hr/>
+<p>Close thread? Once you closed this thread, your not allowed to add comment anymore.</p>
+<form method="post">
+<input type="submit" name="accept" class="btn btn-danger btn-xs" value="Closed">
+</form>
+<hr/>
+
+<?php } ?>
 <hr/>
 
 <!-- Kolom komentar -->
@@ -183,7 +229,6 @@ if ($bimbingan[0]['status_validasi'] == 1) {
 <!-- bagian akhir dari bimbingan online -->
 
 <?php } ?>
-<!-- <a href="<?=base_url()?>ta/bimbingan" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a> -->
 <a href="<?=base_url($this->session->url)?>" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
 <!-- End of content -->
             <!-- /.box-body -->

@@ -40,7 +40,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="<?=base_url()?>ta/settings" class="btn btn-default btn-flat btn-sm">Settings</a>
+                <a href="<?=base_url()?>ta/settings/<?=$this->encrypt->encode($this->uri->uri_string())?>" class="btn btn-default btn-flat btn-sm">Settings</a>
                 </div>
                 <div class="pull-right">
                   <a href="<?=base_url()?>login/logout/ta" class="btn btn-default btn-flat btn-sm">Log out</a>

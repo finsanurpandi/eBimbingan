@@ -45,14 +45,19 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
+    <h1><?=$mhs['npm'].' - '.$mhs['nama_mhs']?></h1>
       <h1>
         Timeline
         <small>Catatan Harian</small>
       </h1>
+      <a href="<?=base_url()?>dosen/catatan_harian" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
+      <br/><br/>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?=base_url()?>dosen"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li>Tugas Akhir</li>
+        <li><a href="<?=base_url()?>dosen/catatan_harian"?>Catatan Harian</a></li>
         <li>Timeline</li>
-        <li class="active">Catatan Harian</li>
+        <li class="active"><strong><?=$mhs['npm']?></strong></li>
       </ol>
     </section>
 
@@ -67,7 +72,7 @@
 <?php
 if (count($catatan_harian) > 0) {
         foreach ($catatan_harian as $key => $value) {
-          $detail = base_url('ta/detail_catatan_harian').'/'.$this->encrypt->encode($value['id_catatan_harian']);
+          $detail = base_url('dosen/detail_catatan').'/'.$this->encrypt->encode($mhs['npm']).'/'.$this->encrypt->encode($value['id_catatan_harian']);
 ?>
 
           
@@ -124,6 +129,7 @@ if (count($catatan_harian) > 0) {
         <!-- /.col -->
       </div>
       <!-- /.row -->
+      <hr/> <a href="<?=base_url()?>dosen/catatan_harian" class="btn btn-default btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
 
 
             <!-- /.box-body -->
