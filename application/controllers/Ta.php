@@ -412,7 +412,8 @@ class Ta extends CI_Controller {
 
         $dataupload['img_profile'] = $fileinfo['file_name'];
         
-				$this->m_basic->updateData('mahasiswa', $dataupload, array('npm' => $this->session->npm));
+        //$this->m_basic->updateData('mahasiswa', $dataupload, array('npm' => $this->session->npm));
+        $this->m_basic->updateImage('mahasiswa', 'v_komentar_ta', $dataupload, array('npm' => $this->session->npm), array('pengirim' => $this->session->nama_mhs));
 
 				$this->session->set_flashdata('success', true);
 

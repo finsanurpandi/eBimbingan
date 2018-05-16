@@ -13,7 +13,7 @@ class Dosen extends CI_Controller {
 // Image Upload Configuration 
   function configImage()
 	{
-		$user = $this->session->npm;
+		$user = $this->session->nidn;
 		$nmfile = "img_".$user."_".time();
 		$config['upload_path']   =   "./assets/img/profiles/";
 		$config['allowed_types'] =   "gif|jpg|jpeg|png"; 
@@ -28,7 +28,7 @@ class Dosen extends CI_Controller {
 // File upload configuration
   function configFile()
 	{
-		$user = $this->session->npm;
+		$user = $this->session->nidn;
 		$nmfile = "file_".$user."_".time();
 		$config['upload_path']   =   "./assets/files/";
 		$config['allowed_types'] =   "doc|docx"; 
@@ -450,7 +450,8 @@ class Dosen extends CI_Controller {
 
         $dataupload['img_profile'] = $fileinfo['file_name'];
         
-        $this->m_basic->updateData('dosen', $dataupload, array('nidn' => $this->session->nidn));
+        //$this->m_basic->updateData('dosen', $dataupload, array('nidn' => $this->session->nidn));
+        $this->m_basic->updateImage('dosen', 'v_komentar_ta', $dataupload, array('nidn' => $this->session->nidn), array('pengirim' => $this->session->nama_dosen));
 
         $this->session->set_flashdata('success', true);
 

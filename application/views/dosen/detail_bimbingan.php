@@ -117,7 +117,7 @@ if ($bimbingan[0]['status_validasi'] == 0 && $tipe == 'offline') {
 
 <div class="row">
   <div class="col-md-1">
-    <img src="<?=base_url()?>assets/img/profiles/<?=$komentar[0]['img']?>" class="img-rounded img-responsive pull-right" width="60px" height="60px">
+    <img src="<?=base_url()?>assets/img/profiles/<?=$komentar[0]['img_profile']?>" class="img-rounded img-responsive pull-right" width="60px" height="60px">
   </div>
   <div class="col-md-11">
     <div class="well well-sm">
@@ -176,7 +176,7 @@ for ($i=0; $i < count($komentar); $i++) {
 ?>
 <div class="row">
   <div class="col-md-1">
-    <img src="<?=base_url()?>assets/img/profiles/<?=$komentar[$i]['img']?>" class="img-rounded img-responsive pull-right" width="60px" height="60px">
+    <img src="<?=base_url()?>assets/img/profiles/<?=$komentar[$i]['img_profile']?>" class="img-rounded img-responsive pull-right" width="60px" height="60px">
   </div>
   <div class="col-md-11">
     <div class="well well-sm">

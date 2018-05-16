@@ -168,6 +168,15 @@ class M_basic extends CI_Model {
 		$this->db->update($table2, $data2);
 		$this->db->trans_complete();
 	}
+
+// UPDATE IMAGE PROFILE
+	function updateImage($table1, $table2, $data, $where, $where2)
+	{
+		$this->db->trans_start();
+		$this->updateData($table1, $data, $where);
+		$this->updateData($table2, $data, $where2);
+		$this->db->trans_complete();
+	}
 }
 
 
