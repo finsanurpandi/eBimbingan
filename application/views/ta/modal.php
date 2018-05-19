@@ -104,6 +104,26 @@
   </div>
 </div>
 
+<!-- Modal LOGOUT -->
+<div class="modal fade modal-danger-custom" id="logout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Logout</h4>
+      </div>
+      <div class="modal-body">
+        <h4>Are you sure want to logout?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="reset" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+        <a href="<?=base_url()?>login/logout/ta" class="btn btn-danger btn-flat btn-sm">Log out</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- Tambah data bimbingan online -->
 <!-- <div class="modal fade modal-primary-custom" id="addBimbinganOnline" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

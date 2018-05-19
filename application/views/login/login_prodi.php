@@ -41,7 +41,7 @@
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="pass" class="form-control" placeholder="Password" name="pass">
+        <input type="password" class="form-control" placeholder="Password" name="pass">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <?php

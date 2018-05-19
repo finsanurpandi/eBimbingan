@@ -459,8 +459,5 @@ class Dosen extends CI_Controller {
 
       }
     }
-
-    //create session url
-    $this->session->set_userdata('url', $this->uri->uri_string());
   }
 }

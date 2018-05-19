@@ -54,7 +54,7 @@ class Login extends CI_Controller {
         $npm = $this->input->post('npm');
 
         //set user
-        $count = $this->m_basic->getNumRows('tugas_akhir', array('npm' => $npm, 'status' => 1));
+        $count = $this->m_basic->getNumRows('tugas_akhir', array('npm' => $npm, 'status' => 1, 'tgl_acc !=' => null));
         $user = $this->m_basic->getAllData('v_tugas_akhir', array('npm' => $npm))->result_array();
 
         // identify user
@@ -348,7 +348,7 @@ function dosen()
 // end of method Dosen
 
 // method Login Prodi
-function prodi($npm=null)
+function prodi()
 {
   $session = $this->session->userdata('login_in');
   $role = $this->session->userdata('role');
@@ -400,7 +400,7 @@ function prodi($npm=null)
 			}
 
 			if ($count == 1) {
-				$user = $this->m_basic->getAllData('prodi', array('username' => $user))->result_array();
+				$user = $this->m_basic->getAllData('prodi', array('username' => $username))->result_array();
 
             $user_account = array (
               'login_in' => TRUE,
@@ -417,7 +417,7 @@ function prodi($npm=null)
             $this->session->set_userdata($user_account);
             $this->m_basic->updateData('login_prodi', $data, array('username' => $username));
 
-            redirect('dosen', 'refresh');
+            redirect('prodi', 'refresh');
 				
 			} else {
 

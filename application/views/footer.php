@@ -25,6 +25,11 @@ $.widget.bridge('uibutton', $.ui.button);
 </script>
 <!-- Bootstrap 3.3.7 -->
 <script src="<?=base_url()?>assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="<?=base_url()?>assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?=base_url()?>assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="<?=base_url()?>assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- Morris.js charts -->
 <!-- <script src="bower_components/raphael/raphael.min.js"></script>
 <script src="bower_components/morris.js/morris.min.js"></script> -->
@@ -46,6 +51,8 @@ $.widget.bridge('uibutton', $.ui.button);
 <script src="<?=base_url()?>assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?=base_url()?>assets/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- Select2 -->
+<script src="<?=base_url()?>assets/bower_components/select2/dist/js/select2.full.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?=base_url()?>assets/js/adminlte.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -57,21 +64,19 @@ $.widget.bridge('uibutton', $.ui.button);
 <script src="<?=base_url()?>assets/js/custom.js"></script>
 <script>
   var baseurl = "<?=base_url()?>";
-  // console.log(baseurl);
 
-  // function getNumComment(id_bimbingan_ta)
-  // {
-  //     console.log(id_bimbingan_ta);
-  //     $.ajax({
-  //         method: "post",
-  //         url: baseurl+"ajax/getNumComment",
-  //         data: {id_bimbingan_ta:id_bimbingan_ta},
-  //         success: function(res){
-  //             $('#numComment').text(res);
-  //             console.log(res);
-  //         }
-  //     });
-  // }
+  $(function () {
+    $('#tbl-mhs').DataTable({
+      'dom' : "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-5'i><'col-sm-7'<'pull-right'p>>>",
+    });
+
+    $('.select-add-ta').select2({
+      placeholder: 'Select an option',
+      dropdownParent: $('#addTa'),
+    });
+  })
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Selamat datang, <?=ucwords($this->session->nama_mhs)?>
+        Selamat datang, <?=ucwords($this->session->nama_user)?>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -21,9 +21,9 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3><?=$bimbingan->num_rows()?>x</h3>
+              <h3><?=count($ta)?></h3>
 
-              <p>Bimbingan tervalidasi</p>
+              <p>Jumlah Mahasiswa TA</p>
             </div>
             <div class="icon">
               <i class="ion ion-ios-paper"></i>
@@ -36,7 +36,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3><?=$catatan->num_rows()?>x</h3>
+              <h3>x</h3>
 
               <p>Catatan Harian</p>
             </div>

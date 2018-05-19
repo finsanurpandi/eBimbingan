@@ -9,6 +9,11 @@ class Ajax extends CI_Controller {
     $this->load->model('m_basic');
   }
 
+  function index()
+  {
+    echo "This is AJAX endpoint!!!";
+  }
+
     function getNumComment()
     {
         $id_bimbingan_ta = $this->input->post('id_bimbingan_ta');
@@ -16,5 +21,13 @@ class Ajax extends CI_Controller {
         $row = $this->m_basic->getAllData('komentar_ta', array('id_bimbingan_ta' => $id_bimbingan_ta, 'pengirim !=' => $this->session->nama_mhs))->num_rows();
 
         echo $row;
+    }
+
+    function npmAvailability()
+    {
+      $npm = $this->input->post('npm');
+      $res = $this->m_basic->getNumRows('mahasiswa', array('npm' => $npm));
+
+      echo $res;
     }
 }

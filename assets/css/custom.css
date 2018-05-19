@@ -80,3 +80,8 @@
 .borderless td, .borderless th {
     border: none;
 }
+
+.dataTables_wrapper .dataTables_filter {
+  float: right;
+  text-align: right;
+}

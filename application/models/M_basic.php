@@ -114,6 +114,14 @@ class M_basic extends CI_Model {
 		return $query;
 	}
 
+	function getSisaMhs()
+	{
+		$sql = "SELECT a.* FROM mahasiswa a LEFT JOIN tugas_akhir b ON a.npm = b.npm WHERE b.npm IS null ORDER BY a.npm ASC";
+		$query = $this->db->query($sql);
+
+		return $query->result_array();
+	}
+
 // INSERT DATA
 
 	function insertData($table, $data)
@@ -175,6 +183,15 @@ class M_basic extends CI_Model {
 		$this->db->trans_start();
 		$this->updateData($table1, $data, $where);
 		$this->updateData($table2, $data, $where2);
+		$this->db->trans_complete();
+	}
+
+// INSERT INTO TWO TABLES
+	function insertTwoTables($table1, $data1, $table2, $data2)
+	{
+		$this->db->trans_start();
+		$this->db->insert($table1, $data1);
+		$this->db->insert($table2, $data2);
 		$this->db->trans_complete();
 	}
 }

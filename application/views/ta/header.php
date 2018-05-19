@@ -43,7 +43,8 @@
                 <a href="<?=base_url()?>ta/settings/<?=$this->encrypt->encode($this->uri->uri_string())?>" class="btn btn-default btn-flat btn-sm">Settings</a>
                 </div>
                 <div class="pull-right">
-                  <a href="<?=base_url()?>login/logout/ta" class="btn btn-default btn-flat btn-sm">Log out</a>
+                  <!-- <a href="<?=base_url()?>login/logout/ta" class="btn btn-default btn-flat btn-sm">Log out</a> -->
+                  <a href="#" class="btn btn-default btn-flat btn-sm" data-toggle="modal" data-target="#logout">Log out</a>
                 </div>
               </li>
             </ul>
