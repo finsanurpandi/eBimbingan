@@ -58,8 +58,8 @@
          border-bottom: 1px solid transparent;
        }
 
-       .nav > li > a {
+       /* .nav > li > a {
           padding: 5px 10px;
-        }
+        } */
     </style>
 </head>
